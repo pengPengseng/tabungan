@@ -56,24 +56,3 @@ INSERT INTO `kategori` (`id`, `nama_kategori`, `tipe`) VALUES
 (9, 'Hiburan & Belanja', 'pengeluaran'),
 (10, 'Lainnya (Pengeluaran)', 'pengeluaran')
 ON DUPLICATE KEY UPDATE `nama_kategori` = VALUES(`nama_kategori`);
-
--- Insert Default Usaha
-INSERT INTO `usaha` (`id`, `nama_usaha`, `keterangan`, `status`) VALUES
-(1, 'Warung Kopi Berkah', 'Usaha kedai kopi dan camilan harian', 'aktif'),
-(2, 'Toko Online ABC', 'Toko fashion online di marketplace', 'aktif')
-ON DUPLICATE KEY UPDATE `nama_usaha` = VALUES(`nama_usaha`);
-
--- Insert Sample Transaksi
-INSERT INTO `transaksi` (`id`, `kategori_id`, `usaha_id`, `tipe`, `jumlah`, `keterangan`, `tanggal`) VALUES
-(1, 1, NULL, 'pemasukan', 12000000.00, 'Gaji Bulan Ini', CURRENT_DATE()),
-(2, 3, 1, 'pemasukan', 4500000.00, 'Penjualan Kopi Minggu 1 & 2', CURRENT_DATE()),
-(3, 8, 1, 'pengeluaran', 1250000.00, 'Belanja bahan baku kopi & sewa meja', CURRENT_DATE()),
-(4, 5, NULL, 'pengeluaran', 850000.00, 'Makan harian keluarga', CURRENT_DATE()),
-(5, 7, NULL, 'pengeluaran', 600000.00, 'Listrik & Wifi Rumah', CURRENT_DATE())
-ON DUPLICATE KEY UPDATE `jumlah` = VALUES(`jumlah`);
-
--- Insert Sample Items untuk Transaksi #3 (Pengeluaran Usaha)
-INSERT INTO `item_transaksi` (`transaksi_id`, `nama_item`, `jumlah_qty`, `harga_satuan`, `subtotal`) VALUES
-(3, 'Biji Kopi Arabika (kg)', 5.00, 150000.00, 750000.00),
-(3, 'Susu UHT Full Cream (karton)', 2.00, 200000.00, 400000.00),
-(3, 'Sirup Vanilla (botol)', 2.00, 50000.00, 100000.00);

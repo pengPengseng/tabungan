@@ -126,22 +126,6 @@ function get_db_connection() {
                     (8, 'Pengeluaran Usaha', 'pengeluaran'),
                     (9, 'Hiburan & Belanja', 'pengeluaran'),
                     (10, 'Lainnya (Pengeluaran)', 'pengeluaran');
-
-                    INSERT OR IGNORE INTO usaha (id, nama_usaha, keterangan, status) VALUES
-                    (1, 'Warung Kopi Berkah', 'Usaha kedai kopi dan camilan harian', 'aktif'),
-                    (2, 'Toko Online ABC', 'Toko fashion online di marketplace', 'aktif');
-
-                    INSERT OR IGNORE INTO transaksi (id, kategori_id, usaha_id, tipe, jumlah, keterangan, tanggal) VALUES
-                    (1, 1, NULL, 'pemasukan', 12000000.00, 'Gaji Bulan Ini', date('now')),
-                    (2, 3, 1, 'pemasukan', 4500000.00, 'Penjualan Kopi Minggu 1 & 2', date('now')),
-                    (3, 8, 1, 'pengeluaran', 1250000.00, 'Belanja bahan baku kopi & sewa meja', date('now')),
-                    (4, 5, NULL, 'pengeluaran', 850000.00, 'Makan harian keluarga', date('now')),
-                    (5, 7, NULL, 'pengeluaran', 600000.00, 'Listrik & Wifi Rumah', date('now'));
-
-                    INSERT OR IGNORE INTO item_transaksi (transaksi_id, nama_item, jumlah_qty, harga_satuan, subtotal) VALUES
-                    (3, 'Biji Kopi Arabika (kg)', 5.00, 150000.00, 750000.00),
-                    (3, 'Susu UHT Full Cream (karton)', 2.00, 200000.00, 400000.00),
-                    (3, 'Sirup Vanilla (botol)', 2.00, 50000.00, 100000.00);
                 ");
             }
             return $pdo;

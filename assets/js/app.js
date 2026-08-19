@@ -17,72 +17,14 @@ const DEFAULT_CATEGORIES = [
     { id: 10, nama_kategori: 'Lainnya (Pengeluaran)', tipe: 'pengeluaran' }
 ];
 
-const DEFAULT_BUSINESSES = [
-    { id: 1, nama_usaha: 'Warung Kopi Berkah', keterangan: 'Usaha kedai kopi dan camilan harian', status: 'aktif' },
-    { id: 2, nama_usaha: 'Toko Online ABC', keterangan: 'Toko fashion online di marketplace', status: 'aktif' }
-];
+const DEFAULT_BUSINESSES = [];
 
 const getTodayDateString = () => {
     const d = new Date();
     return d.toISOString().split('T')[0];
 };
 
-const DEFAULT_TRANSACTIONS = [
-    {
-        id: 1,
-        kategori_id: 1,
-        usaha_id: null,
-        tipe: 'pemasukan',
-        jumlah: 12000000,
-        keterangan: 'Gaji Bulan Ini',
-        tanggal: getTodayDateString(),
-        items: []
-    },
-    {
-        id: 2,
-        kategori_id: 3,
-        usaha_id: 1,
-        tipe: 'pemasukan',
-        jumlah: 4500000,
-        keterangan: 'Penjualan Kopi Minggu 1 & 2',
-        tanggal: getTodayDateString(),
-        items: []
-    },
-    {
-        id: 3,
-        kategori_id: 8,
-        usaha_id: 1,
-        tipe: 'pengeluaran',
-        jumlah: 1250000,
-        keterangan: 'Belanja bahan baku kopi & sewa meja',
-        tanggal: getTodayDateString(),
-        items: [
-            { id: 1, nama_item: 'Biji Kopi Arabika (kg)', jumlah_qty: 5, harga_satuan: 150000, subtotal: 750000 },
-            { id: 2, nama_item: 'Susu UHT Full Cream (karton)', jumlah_qty: 2, harga_satuan: 200000, subtotal: 400000 },
-            { id: 3, nama_item: 'Sirup Vanilla (botol)', jumlah_qty: 2, harga_satuan: 50000, subtotal: 100000 }
-        ]
-    },
-    {
-        id: 4,
-        kategori_id: 5,
-        usaha_id: null,
-        tipe: 'pengeluaran',
-        jumlah: 850000,
-        keterangan: 'Makan harian keluarga',
-        tanggal: getTodayDateString(),
-        items: []
-    },
-    {
-        id: 5,
-        kategori_id: 7,
-        usaha_id: null,
-        tipe: 'pengeluaran',
-        jumlah: 600000,
-        keterangan: 'Listrik & Wifi Rumah',
-        tanggal: getTodayDateString(),
-        items: []
-    }
-];
+const DEFAULT_TRANSACTIONS = [];
 
 // LocalStorage Keys
 const STORAGE_KEYS = {
