@@ -1,0 +1,4 @@
+# Keuangan App GitIgnore
+.DS_Store
+Thumbs.db
+*.log

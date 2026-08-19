@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Laporan - ArthaTrack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#1b6d24",
+                        "primary": "#0d631b",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f8f9fa",
+                        "on-primary-container": "#cbffc2",
+                        "on-tertiary-fixed": "#001c3a",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#006eca",
+                        "secondary-container": "#da3433",
+                        "on-secondary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9fa",
+                        "on-tertiary-container": "#ebf1ff",
+                        "on-primary-fixed": "#002204",
+                        "inverse-surface": "#2e3132",
+                        "outline-variant": "#bfcaba",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary-fixed-variant": "#930010",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#a5c8ff",
+                        "primary-fixed": "#a3f69c",
+                        "secondary": "#b6171e",
+                        "outline": "#707a6c",
+                        "primary-fixed-dim": "#88d982",
+                        "primary-container": "#2e7d32",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-dim": "#d9dadb",
+                        "surface-container": "#edeeef",
+                        "inverse-primary": "#88d982",
+                        "tertiary": "#00569f",
+                        "secondary-fixed": "#ffdad6",
+                        "on-secondary-fixed": "#410003",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#005312",
+                        "on-surface": "#191c1d",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-fixed-variant": "#004786",
+                        "on-background": "#191c1d",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#40493d",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#ffb3ac",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container-highest": "#e1e3e4",
+                        "tertiary-fixed": "#d4e3ff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "card-gap": "20px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "section-margin": "32px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "numeric-display": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-xl": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "numeric-display": ["28px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f8f9fa; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+        
+        /* Smooth scrolling and transitions */
+        html { scroll-behavior: smooth; }
+        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #bfcaba; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #707a6c; }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-background flex h-screen overflow-hidden">
+<!-- SideNavBar (Hidden on Mobile, Flex on LG) -->
+<aside class="hidden lg:flex flex-col h-screen p-4 border-r border-outline-variant dark:border-outline bg-surface-container-lowest dark:bg-surface-container-low shadow-md w-64 fixed left-0 top-0 z-40">
+<!-- Brand -->
+<div class="mb-8 px-4 py-2">
+<h1 class="font-headline-xl text-headline-xl font-bold text-primary dark:text-primary-fixed">ArthaTrack</h1>
+</div>
+<!-- User Header -->
+<div class="mb-6 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden flex-shrink-0">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of an Indonesian businessman with a friendly expression, set against a clean, bright, and modern office background. The lighting is soft and natural, emphasizing a corporate and trustworthy aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAocW505JkmK0KTTCUPgdH_5EemLUBwDCGXqpV7ZunwwhSETVTLoPuT8u22-i44CNvk2gqARNDwR4Lyn86vvZjIK9sm3Ll9d-MFbId1tEwYRmOF6A5FoPb7L4zPZ6Qay7CH7s_pK2sr5X8IFPXllyLc-Zij3Hze6nM7Xmu0gg7GaEnhBI_XgxZEmVWAoZHwfPUXO3bhvNJNFUgv5v8Q0kRdqcouuIMiR0OHHP01SCC5LhazHOh-22lPKw"/>
+</div>
+<div class="overflow-hidden">
+<p class="font-title-md text-title-md truncate">Budi Santoso</p>
+<p class="font-label-md text-label-md text-on-surface-variant truncate">Personal Account</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 flex flex-col gap-2 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-title-md text-title-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-title-md text-title-md font-medium">Transaksi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-title-md text-title-md font-medium">Usaha Saya</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-on-primary-container rounded-xl font-semibold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined filled">assessment</span>
+<span class="font-title-md text-title-md font-medium">Laporan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-title-md text-title-md font-medium">Kelola Kategori</span>
+</a>
+</nav>
+<!-- CTA -->
+<div class="mt-4 mb-6 px-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-full font-title-md text-title-md shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                Tambah Transaksi
+            </button>
+</div>
+<!-- Footer Links -->
+<div class="mt-auto flex flex-col gap-2 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-title-md text-title-md font-medium">Bantuan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary hover:bg-secondary-container hover:text-on-secondary-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-title-md text-title-md font-medium">Keluar</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col lg:ml-64 w-full h-screen overflow-hidden bg-background">
+<!-- TopNavBar (Visible on Mobile & Tablet, acts as header on Desktop) -->
+<header class="flex justify-between items-center w-full px-container-padding h-16 sticky top-0 z-30 bg-surface dark:bg-surface-dim shadow-sm lg:shadow-none lg:border-b lg:border-outline-variant">
+<!-- Mobile Brand/Menu Toggle -->
+<div class="flex items-center gap-4 lg:hidden">
+<button class="text-on-surface p-2 hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">ArthaTrack</h1>
+</div>
+<!-- Page Title (Desktop) -->
+<div class="hidden lg:block">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Laporan Bulanan</h2>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-2 lg:gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-all relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-all hidden sm:block">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden lg:hidden ml-2">
+<img alt="Profil Pengguna" class="w-full h-full object-cover" data-alt="A professional headshot of an Indonesian businessman with a friendly expression, set against a clean, bright, and modern office background. The lighting is soft and natural, emphasizing a corporate and trustworthy aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk-d_KDasi1mmdffGH6NX1Z77yZLmMIa7RcLxCZWdRIJJdBtXFwCNWh1aUpJAdsXDbqW0J1wvy8Uw5YdcQ6laPMFVlAgBgpRKZYJpc4KkjldIXI3jch1ejVZ0MRzM-X_ZTnAclTyNsbwImiuV8vVtJ11PrUAeGPZLNv6p_MeDv_XgtWoRlbaPVqko8p93nGa8syh7O7eq0HsDi9t0rhUlEq2uAQbtV0LGnp5mcnJ65WJJZ0AycAmZz-g"/>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Canvas -->
+<div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-container-padding">
+<!-- Header & Filters Section -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-section-margin">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface lg:hidden mb-1">Laporan Bulanan</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tinjauan komprehensif keuangan pribadi dan usaha Anda.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+<!-- Filters -->
+<div class="flex bg-surface-container-low rounded-lg p-1 border border-outline-variant shadow-sm w-full sm:w-auto">
+<select class="bg-transparent border-none text-on-surface font-title-md text-title-md focus:ring-0 py-2 pl-3 pr-8 cursor-pointer rounded-md hover:bg-surface-container-high transition-colors">
+<option>Oktober</option>
+<option selected="">November</option>
+<option>Desember</option>
+</select>
+<div class="w-px bg-outline-variant my-2 mx-1"></div>
+<select class="bg-transparent border-none text-on-surface font-title-md text-title-md focus:ring-0 py-2 pl-3 pr-8 cursor-pointer rounded-md hover:bg-surface-container-high transition-colors">
+<option>2022</option>
+<option selected="">2023</option>
+</select>
+</div>
+<!-- Export Actions -->
+<div class="flex gap-2 ml-auto sm:ml-0">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-primary hover:bg-surface-container-low hover:shadow-sm transition-all font-title-md text-title-md" title="Export PDF">
+<span class="material-symbols-outlined text-secondary">picture_as_pdf</span>
+<span class="hidden sm:inline">PDF</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-primary hover:bg-surface-container-low hover:shadow-sm transition-all font-title-md text-title-md" title="Export Excel">
+<span class="material-symbols-outlined text-surface-tint">table_view</span>
+<span class="hidden sm:inline">Excel</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout for Main Content -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Ringkasan Laporan (Top Level Metrics & Chart) -->
+<div class="col-span-1 md:col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-transparent hover:border-outline-variant hover:shadow-md transition-all">
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-6">Ringkasan Arus Kas</h3>
+<!-- Metric Cards Row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/50">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Pemasukan</span>
+<span class="material-symbols-outlined text-primary bg-primary-container/30 rounded-full p-1 text-sm">arrow_downward</span>
+</div>
+<p class="font-numeric-display text-numeric-display text-on-surface">Rp 45.500.000</p>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/50">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Pengeluaran</span>
+<span class="material-symbols-outlined text-secondary bg-secondary-container/30 rounded-full p-1 text-sm">arrow_upward</span>
+</div>
+<p class="font-numeric-display text-numeric-display text-on-surface">Rp 32.150.000</p>
+</div>
+<div class="p-4 rounded-lg bg-primary-container/10 border border-primary/20">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-primary-fixed-dim font-bold">Surplus Kas</span>
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<p class="font-numeric-display text-numeric-display text-primary">Rp 13.350.000</p>
+</div>
+</div>
+<!-- Comparison Chart Placeholder -->
+<div class="w-full h-64 relative">
+<canvas id="cashflowChart"></canvas>
+</div>
+</div>
+<!-- Gaji vs Pengeluaran (Pie Chart) -->
+<div class="col-span-1 md:col-span-12 lg:col-span-4 bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-transparent hover:border-outline-variant hover:shadow-md transition-all flex flex-col">
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-2">Alokasi Pengeluaran</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mb-6">Persentase dari total pengeluaran bulan ini.</p>
+<div class="w-full flex-1 min-h-[200px] relative flex justify-center items-center mb-6">
+<canvas id="expensePieChart"></canvas>
+</div>
+<!-- Compact Legend Table -->
+<div class="w-full overflow-hidden rounded-lg border border-outline-variant">
+<table class="w-full text-left font-body-md text-body-md">
+<thead class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant">
+<tr>
+<th class="px-3 py-2 font-medium">Kategori</th>
+<th class="px-3 py-2 font-medium text-right">%</th>
+<th class="px-3 py-2 font-medium text-right">Nilai</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-3 py-2 flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+                                        Operasional
+                                    </td>
+<td class="px-3 py-2 text-right">45%</td>
+<td class="px-3 py-2 text-right">Rp 14.4M</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-3 py-2 flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+                                        Pribadi
+                                    </td>
+<td class="px-3 py-2 text-right">30%</td>
+<td class="px-3 py-2 text-right">Rp 9.6M</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-3 py-2 flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-[#f59e0b]"></div>
+                                        Pajak
+                                    </td>
+<td class="px-3 py-2 text-right">15%</td>
+<td class="px-3 py-2 text-right">Rp 4.8M</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-3 py-2 flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-outline"></div>
+                                        Lainnya
+                                    </td>
+<td class="px-3 py-2 text-right">10%</td>
+<td class="px-3 py-2 text-right">Rp 3.2M</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Laporan per Usaha Table -->
+<div class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl shadow-sm border border-transparent hover:border-outline-variant hover:shadow-md transition-all overflow-hidden mb-8">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Kinerja Portofolio Usaha</h3>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Ringkasan laba/rugi bersih per unit usaha.</p>
+</div>
+<button class="text-primary hover:bg-primary-container/20 p-2 rounded-full transition-all">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md whitespace-nowrap">
+<thead class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant">
+<tr>
+<th class="px-6 py-4 font-medium">Nama Usaha</th>
+<th class="px-6 py-4 font-medium text-right">Pemasukan</th>
+<th class="px-6 py-4 font-medium text-right">Pengeluaran</th>
+<th class="px-6 py-4 font-medium text-right">Laba/Rugi Bersih</th>
+<th class="px-6 py-4 font-medium text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">local_cafe</span>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Kedai Kopi Senja</p>
+<p class="font-label-md text-label-md text-on-surface-variant">F&amp;B</p>
+</div>
+</td>
+<td class="px-6 py-4 text-right">Rp 25.000.000</td>
+<td class="px-6 py-4 text-right">Rp 15.000.000</td>
+<td class="px-6 py-4 text-right font-bold text-primary">Rp 10.000.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-md text-label-md bg-primary-container/20 text-primary">
+                                            Profit
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">store</span>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Toko Kelontong Berkah</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Retail</p>
+</div>
+</td>
+<td class="px-6 py-4 text-right">Rp 12.500.000</td>
+<td class="px-6 py-4 text-right">Rp 8.000.000</td>
+<td class="px-6 py-4 text-right font-bold text-primary">Rp 4.500.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-md text-label-md bg-primary-container/20 text-primary">
+                                            Profit
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">computer</span>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Jasa IT Support</p>
+<p class="font-label-md text-label-md text-on-surface-variant">Jasa</p>
+</div>
+</td>
+<td class="px-6 py-4 text-right">Rp 8.000.000</td>
+<td class="px-6 py-4 text-right">Rp 9.150.000</td>
+<td class="px-6 py-4 text-right font-bold text-secondary">- Rp 1.150.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-md text-label-md bg-secondary-container/20 text-secondary">
+                                            Loss
+                                        </span>
+</td>
+</tr>
+</tbody>
+<tfoot class="bg-surface-bright border-t-2 border-outline-variant font-title-md text-title-md">
+<tr>
+<td class="px-6 py-4 font-bold">Total Keseluruhan</td>
+<td class="px-6 py-4 text-right font-bold">Rp 45.500.000</td>
+<td class="px-6 py-4 text-right font-bold">Rp 32.150.000</td>
+<td class="px-6 py-4 text-right font-bold text-primary">Rp 13.350.000</td>
+<td class="px-6 py-4"></td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+</div> <!-- End Bento Grid -->
+</div> <!-- End Scrollable Canvas -->
+</main>
+<!-- Chart.js Initialization -->
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cashflow Bar/Line Chart
+            const ctxCashflow = document.getElementById('cashflowChart').getContext('2d');
+            new Chart(ctxCashflow, {
+                type: 'bar',
+                data: {
+                    labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                    datasets: [
+                        {
+                            label: 'Pemasukan',
+                            data: [12000000, 15000000, 8000000, 10500000],
+                            backgroundColor: '#0d631b', // primary
+                            borderRadius: 4,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.8
+                        },
+                        {
+                            label: 'Pengeluaran',
+                            data: [7000000, 9000000, 6150000, 10000000],
+                            backgroundColor: '#b6171e', // secondary
+                            borderRadius: 4,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', align: 'end', labels: { usePointStyle: true, boxWidth: 8, font: { family: 'Inter' } } },
+                        tooltip: { mode: 'index', intersect: false, fontFamily: 'Inter', callbacks: { label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) { label += ': '; }
+                            if (context.parsed.y !== null) { label += new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(context.parsed.y); }
+                            return label;
+                        }}}
+                    },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { color: '#e1e3e4', borderDash: [5, 5] },
+                            ticks: { callback: function(value) { return 'Rp ' + (value/1000000) + 'M'; } }
+                        }
+                    },
+                    interaction: { mode: 'nearest', axis: 'x', intersect: false }
+                }
+            });
+
+            // Expense Pie Chart
+            const ctxExpense = document.getElementById('expensePieChart').getContext('2d');
+            new Chart(ctxExpense, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Operasional', 'Pribadi', 'Pajak', 'Lainnya'],
+                    datasets: [{
+                        data: [45, 30, 15, 10],
+                        backgroundColor: [
+                            '#b6171e', // secondary
+                            '#00569f', // tertiary
+                            '#f59e0b', // amber custom for tax
+                            '#707a6c'  // outline
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return ' ' + context.label + ': ' + context.parsed + '%'; }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>
