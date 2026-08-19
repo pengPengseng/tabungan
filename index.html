@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Keuangan - Smart Finance & Business Tracker</title>
+    
+    <!-- Tailwind CSS CDN with Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Google Fonts & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Chart.js & SheetJS (Excel Export) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- Tailwind Config matching Stitch Fiscal Precision Design -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d631b",
+                        "primary-container": "#2e7d32",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#cbffc2",
+                        "primary-fixed": "#a3f69c",
+                        "secondary": "#b6171e",
+                        "secondary-container": "#da3433",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#fffbff",
+                        "tertiary": "#00569f",
+                        "tertiary-container": "#006eca",
+                        "background": "#f8f9fa",
+                        "surface": "#f8f9fa",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-variant": "#e1e3e4",
+                        "on-background": "#191c1d",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#40493d",
+                        "outline": "#707a6c",
+                        "outline-variant": "#bfcaba"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "md": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #191c1d; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .icon-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f3f5; }
+        ::-webkit-scrollbar-thumb { background: #bfcaba; border-radius: 3px; }
+    </style>
+</head>
+<body class="flex flex-col lg:flex-row min-h-screen bg-background text-on-background antialiased">
+
+<!-- Desktop SideNav -->
+<aside class="hidden lg:flex flex-col h-screen p-4 border-r border-outline-variant bg-surface-container-lowest shadow-sm w-64 fixed left-0 top-0 z-40">
+    <div class="mb-8 px-3 py-2 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary font-bold shadow">
+            <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+        </div>
+        <div>
+            <h2 class="font-bold text-lg text-primary tracking-tight">Keuangan</h2>
+            <p class="text-xs text-on-surface-variant font-medium">Smart Offline & Cloud</p>
+        </div>
+    </div>
+    
+    <nav class="flex-1 space-y-1.5">
+        <a href="#dashboard" data-nav="dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 bg-primary-container text-on-primary-container font-semibold shadow-sm">
+            <span class="material-symbols-outlined">dashboard</span>
+            Dashboard
+        </a>
+        <a href="#transaksi" data-nav="transaksi" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+            <span class="material-symbols-outlined">receipt_long</span>
+            Transaksi
+        </a>
+        <a href="#usaha" data-nav="usaha" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+            <span class="material-symbols-outlined">storefront</span>
+            Usaha Saya
+        </a>
+        <a href="#laporan" data-nav="laporan" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+            <span class="material-symbols-outlined">assessment</span>
+            Laporan & Excel
+        </a>
+        <a href="#kategori" data-nav="kategori" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+            <span class="material-symbols-outlined">category</span>
+            Kelola Kategori
+        </a>
+    </nav>
+    
+    <div class="mt-auto pt-4 space-y-2 border-t border-outline-variant">
+        <button onclick="App.openAddTransaksiModal()" class="w-full py-3 px-4 bg-primary text-on-primary rounded-xl font-semibold text-sm hover:bg-primary-container transition-all shadow flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">add_circle</span>
+            Tambah Transaksi
+        </button>
+    </div>
+</aside>
+
+<!-- Mobile Drawer -->
+<div id="mobileSidebar" class="fixed inset-0 bg-black/40 z-50 hidden transition-opacity lg:hidden">
+    <div class="w-64 bg-surface-container-lowest h-full p-4 flex flex-col shadow-2xl">
+        <div class="flex items-center justify-between mb-6 px-2">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">account_balance_wallet</span>
+                <span class="font-bold text-lg text-primary">Keuangan</span>
+            </div>
+            <button onclick="App.closeMobileSidebar()" class="text-on-surface-variant p-1 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="#dashboard" data-nav="dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-on-surface-variant">
+                <span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+            <a href="#transaksi" data-nav="transaksi" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-on-surface-variant">
+                <span class="material-symbols-outlined">receipt_long</span> Transaksi
+            </a>
+            <a href="#usaha" data-nav="usaha" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-on-surface-variant">
+                <span class="material-symbols-outlined">storefront</span> Usaha Saya
+            </a>
+            <a href="#laporan" data-nav="laporan" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-on-surface-variant">
+                <span class="material-symbols-outlined">assessment</span> Laporan & Excel
+            </a>
+            <a href="#kategori" data-nav="kategori" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-on-surface-variant">
+                <span class="material-symbols-outlined">category</span> Kelola Kategori
+            </a>
+        </nav>
+    </div>
+</div>
+
+<!-- Main Area -->
+<div class="flex-1 lg:ml-64 flex flex-col min-h-screen">
+    <!-- Top Bar -->
+    <header class="flex justify-between items-center px-4 sm:px-8 h-16 sticky top-0 z-30 bg-white/95 border-b border-outline-variant shadow-sm backdrop-blur-md">
+        <div class="flex items-center gap-4">
+            <button onclick="document.getElementById('mobileSidebar').classList.remove('hidden')" class="lg:hidden text-on-surface p-2 rounded-xl hover:bg-surface-container">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <h1 id="headerPageTitle" class="font-bold text-xl text-primary tracking-tight">Dashboard Keuangan</h1>
+        </div>
+        
+        <div class="flex items-center gap-2">
+            <!-- Backup & Restore Buttons -->
+            <button onclick="App.backupJSON()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold rounded-xl border border-outline-variant transition-colors" title="Download Backup JSON">
+                <span class="material-symbols-outlined text-base">download</span> Backup
+            </button>
+            <label class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold rounded-xl border border-outline-variant cursor-pointer transition-colors" title="Restore Data JSON">
+                <span class="material-symbols-outlined text-base">upload</span> Restore
+                <input type="file" accept=".json" onchange="App.restoreJSON(this)" class="hidden">
+            </label>
+            <div class="w-9 h-9 rounded-full bg-primary-container/30 border border-primary/20 flex items-center justify-center text-primary font-bold ml-1">
+                <span class="material-symbols-outlined text-xl">person</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
+        
+        <!-- Toast Container -->
+        <div id="toastContainer" class="fixed top-20 right-4 z-50 w-full max-w-sm"></div>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 1: DASHBOARD -->
+        <!-- ================================================================= -->
+        <section id="view-dashboard" class="view-section space-y-6">
+            <!-- Summary Metrics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Total Saldo -->
+                <div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-semibold text-sm text-on-surface-variant">Total Saldo (Akumulasi)</h3>
+                            <p class="text-xs text-on-surface-variant">Tersimpan di Perangkat</p>
+                        </div>
+                        <span class="material-symbols-outlined text-primary bg-primary-container/20 p-2.5 rounded-xl">account_balance_wallet</span>
+                    </div>
+                    <div id="dashTotalSaldo" class="font-bold text-2xl sm:text-3xl text-on-surface mb-2 tracking-tight">Rp 0</div>
+                    <div class="flex items-center gap-1 text-xs font-semibold text-primary">
+                        <span class="material-symbols-outlined text-base">check_circle</span>
+                        <span>Auto-saved di Browser</span>
+                    </div>
+                </div>
+
+                <!-- Pemasukan Bulan Ini -->
+                <div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant border-l-4 border-l-primary hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-semibold text-sm text-on-surface-variant">Pemasukan Bulan Ini</h3>
+                            <p id="dashMonthYearLabel" class="text-xs text-on-surface-variant">Bulan Berjalan</p>
+                        </div>
+                        <span class="material-symbols-outlined text-primary bg-primary-container/20 p-2.5 rounded-xl">arrow_downward</span>
+                    </div>
+                    <div id="dashPemasukanBulan" class="font-bold text-2xl sm:text-3xl text-on-surface mb-2 tracking-tight">Rp 0</div>
+                    <div class="flex items-center gap-1 text-xs font-semibold text-emerald-700">
+                        <span class="material-symbols-outlined text-base">trending_up</span>
+                        <span>Kas Masuk Periode Ini</span>
+                    </div>
+                </div>
+
+                <!-- Pengeluaran Bulan Ini -->
+                <div class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant border-l-4 border-l-secondary hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-semibold text-sm text-on-surface-variant">Pengeluaran Bulan Ini</h3>
+                            <p id="dashMonthYearLabel2" class="text-xs text-on-surface-variant">Bulan Berjalan</p>
+                        </div>
+                        <span class="material-symbols-outlined text-secondary bg-secondary-container/20 p-2.5 rounded-xl">arrow_upward</span>
+                    </div>
+                    <div id="dashPengeluaranBulan" class="font-bold text-2xl sm:text-3xl text-on-surface mb-2 tracking-tight">Rp 0</div>
+                    <div class="flex items-center gap-1 text-xs font-semibold text-rose-700">
+                        <span class="material-symbols-outlined text-base">trending_down</span>
+                        <span>Total Pengeluaran Periode Ini</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salary Card & Charts Bento Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Ringkasan Gaji Card -->
+                <div class="lg:col-span-1 bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant flex flex-col justify-between space-y-6">
+                    <div class="flex items-center justify-between border-b border-outline-variant pb-4">
+                        <div class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-primary bg-primary-container/20 p-2 rounded-xl">payments</span>
+                            <div>
+                                <h3 class="font-bold text-base text-on-surface">Ringkasan Gaji Bulan Ini</h3>
+                                <p class="text-xs text-on-surface-variant">Analisis Alokasi Gaji</p>
+                            </div>
+                        </div>
+                        <span id="dashGajiBadge" class="px-2.5 py-1 text-[11px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">
+                            0% Terpakai
+                        </span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant">Total Gaji Masuk:</span>
+                            <span id="dashTotalGaji" class="font-bold text-primary">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant">Total Pengeluaran:</span>
+                            <span id="dashTotalPengeluaranGaji" class="font-bold text-secondary">Rp 0</span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="space-y-1.5 pt-2">
+                            <div class="flex justify-between text-xs font-semibold text-on-surface">
+                                <span>Sisa Alokasi Gaji</span>
+                                <span id="dashSisaGaji">Rp 0</span>
+                            </div>
+                            <div class="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
+                                <div id="dashGajiProgressBar" class="h-full rounded-full transition-all duration-500 bg-primary" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Category Spend -->
+                    <div class="pt-4 border-t border-outline-variant space-y-2">
+                        <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Pengeluaran Terbesar:</p>
+                        <div id="dashTopExpenseContainer" class="space-y-1.5"></div>
+                    </div>
+                </div>
+
+                <!-- Monthly Cashflow Chart -->
+                <div class="lg:col-span-2 bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-outline-variant pb-4">
+                        <div>
+                            <h3 class="font-bold text-base text-on-surface">Grafik Arus Kas Bulanan</h3>
+                            <p class="text-xs text-on-surface-variant">Tren Pemasukan vs Pengeluaran per Bulan</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs font-semibold">
+                            <span class="flex items-center gap-1 text-primary"><span class="w-3 h-3 rounded-full bg-primary inline-block"></span> Pemasukan</span>
+                            <span class="flex items-center gap-1 text-secondary"><span class="w-3 h-3 rounded-full bg-secondary inline-block"></span> Pengeluaran</span>
+                        </div>
+                    </div>
+
+                    <div class="h-64 sm:h-72 w-full">
+                        <canvas id="dashCashflowCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions Table -->
+            <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-lg text-on-surface">Transaksi Terakhir</h3>
+                        <p class="text-xs text-on-surface-variant">Riwayat transaksi terbaru yang tercatat</p>
+                    </div>
+                    <button onclick="App.renderView('transaksi')" class="px-3.5 py-2 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-xl font-semibold text-xs transition-colors flex items-center gap-1">
+                        Lihat Semua Transaksi <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-surface-container text-xs font-semibold text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">
+                            <tr>
+                                <th class="px-4 py-3">Tanggal</th>
+                                <th class="px-4 py-3">Kategori</th>
+                                <th class="px-4 py-3">Usaha</th>
+                                <th class="px-4 py-3">Keterangan</th>
+                                <th class="px-4 py-3 text-right">Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashRecentTableBody" class="divide-y divide-outline-variant/60"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 2: TRANSAKSI -->
+        <!-- ================================================================= -->
+        <section id="view-transaksi" class="view-section hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-on-surface">Daftar Transaksi</h2>
+                    <p class="text-sm text-on-surface-variant">Catat pemasukan, pengeluaran, serta rincian item belanja harian/usaha.</p>
+                </div>
+                <button onclick="App.openAddTransaksiModal()" class="px-4 py-2.5 bg-primary text-on-primary rounded-xl font-semibold text-sm hover:bg-primary-container transition-all shadow flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">add_circle</span> Tambah Transaksi
+                </button>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant shadow-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Bulan</label>
+                        <select id="filterTransaksiBulan" onchange="App.renderTransaksi()" class="w-full px-3 py-2 text-sm border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20">
+                            <option value="">Semua Bulan</option>
+                            <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+                            <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+                            <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+                            <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Tahun</label>
+                        <select id="filterTransaksiTahun" onchange="App.renderTransaksi()" class="w-full px-3 py-2 text-sm border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20">
+                            <option value="">Semua Tahun</option>
+                            <option value="2026" selected>2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Tipe</label>
+                        <select id="filterTransaksiTipe" onchange="App.renderTransaksi()" class="w-full px-3 py-2 text-sm border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20">
+                            <option value="">Semua Tipe</option>
+                            <option value="pemasukan">Pemasukan (+)</option>
+                            <option value="pengeluaran">Pengeluaran (-)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Kategori</label>
+                        <select id="filterTransaksiKategori" onchange="App.renderTransaksi()" class="w-full px-3 py-2 text-sm border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20">
+                            <option value="">Semua Kategori</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-end gap-2">
+                        <button onclick="App.renderTransaksi()" class="w-full py-2 px-4 bg-surface-container-high text-on-surface hover:bg-surface-container-highest rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-lg">filter_alt</span> Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions Table -->
+            <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-surface-container text-xs font-semibold text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">
+                            <tr>
+                                <th class="px-4 py-3.5">Tanggal</th>
+                                <th class="px-4 py-3.5">Tipe</th>
+                                <th class="px-4 py-3.5">Kategori</th>
+                                <th class="px-4 py-3.5">Usaha</th>
+                                <th class="px-4 py-3.5">Keterangan</th>
+                                <th class="px-4 py-3.5 text-right">Jumlah</th>
+                                <th class="px-4 py-3.5 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaksiTableBody" class="divide-y divide-outline-variant/60"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 3: USAHA SAYA -->
+        <!-- ================================================================= -->
+        <section id="view-usaha" class="view-section hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-on-surface">Manajemen Usaha Saya</h2>
+                    <p class="text-sm text-on-surface-variant">Kelola daftar usaha mandiri, rincian pengeluaran item, dan laba/rugi bersih.</p>
+                </div>
+                <button onclick="App.openAddUsahaModal()" class="px-4 py-2.5 bg-primary text-on-primary rounded-xl font-semibold text-sm hover:bg-primary-container transition-all shadow flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">add_business</span> Tambah Usaha
+                </button>
+            </div>
+
+            <!-- Business List -->
+            <div id="usahaListView">
+                <div id="usahaCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- Business Detail Section -->
+            <div id="usahaDetailView" class="hidden space-y-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="App.renderUsaha()" class="px-3.5 py-2 bg-surface-container-high text-on-surface rounded-xl font-semibold text-xs transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">arrow_back</span> Kembali ke Daftar Usaha
+                    </button>
+                </div>
+
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <div class="flex items-center gap-3 border-b border-outline-variant pb-4">
+                        <span class="material-symbols-outlined text-primary bg-primary-container/20 p-3 rounded-2xl text-2xl">storefront</span>
+                        <div>
+                            <h3 id="detailUsahaName" class="font-bold text-xl text-on-surface">Nama Usaha</h3>
+                            <p id="detailUsahaKet" class="text-xs text-on-surface-variant">Keterangan</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                            <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">Total Pemasukan</p>
+                            <p id="detailUsahaPemasukan" class="text-xl font-bold text-emerald-900 mt-1">Rp 0</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-rose-50 border border-rose-100">
+                            <p class="text-xs font-semibold text-rose-700 uppercase tracking-wider">Total Pengeluaran</p>
+                            <p id="detailUsahaPengeluaran" class="text-xl font-bold text-rose-900 mt-1">Rp 0</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
+                            <p class="text-xs font-semibold text-blue-700 uppercase tracking-wider">Laba / Rugi Bersih</p>
+                            <p id="detailUsahaLaba" class="text-xl font-bold text-blue-900 mt-1">Rp 0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rincian Item Usaha -->
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">shopping_bag</span> Rincian Item Pembelian & Operasional Usaha
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-surface-container text-xs font-semibold text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">
+                                <tr>
+                                    <th class="px-4 py-3">Tanggal</th>
+                                    <th class="px-4 py-3">Nama Item</th>
+                                    <th class="px-4 py-3 text-center">Qty</th>
+                                    <th class="px-4 py-3 text-right">Harga Satuan</th>
+                                    <th class="px-4 py-3 text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailUsahaItemTableBody" class="divide-y divide-outline-variant/60"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 4: LAPORAN & EXPORT EXCEL -->
+        <!-- ================================================================= -->
+        <section id="view-laporan" class="view-section hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 id="laporanPeriodeTitle" class="text-xl font-bold text-on-surface">Laporan Keuangan Bulanan</h2>
+                    <p class="text-sm text-on-surface-variant">Ringkasan transaksi, analisis gaji, dan ekspor laporan ke format Microsoft Excel.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="App.exportMonthlyExcel()" class="px-4 py-2.5 bg-emerald-700 text-white hover:bg-emerald-800 rounded-xl font-semibold text-sm transition-all shadow flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">table_view</span> Ekspor Excel (.xlsx)
+                    </button>
+                    <button onclick="window.print()" class="px-4 py-2.5 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-xl font-semibold text-sm transition-all flex items-center gap-2 border border-outline-variant">
+                        <span class="material-symbols-outlined text-lg">print</span> Cetak / PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Month / Year Selector -->
+            <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant shadow-sm flex flex-wrap items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <label class="text-xs font-semibold text-on-surface-variant uppercase">Bulan:</label>
+                    <select id="filterLaporanBulan" onchange="App.renderLaporan()" class="px-3 py-2 text-sm border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20">
+                        <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+                        <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+                        <option value="7">Juli</option><option value="8" selected>Agustus</option><option value="9">September</option>
+                        <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <label class="text-xs font-semibold text-on-surface-variant uppercase">Tahun:</label>
+                    <select id="filterLaporanTahun" onchange="App.renderLaporan()" class="px-3 py-2 text-sm border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20">
+                        <option value="2026" selected>2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Monthly Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm">
+                    <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Total Pemasukan</p>
+                    <p id="laporanTotalPemasukan" class="text-2xl font-bold text-primary mt-1">Rp 0</p>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm">
+                    <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Total Pengeluaran</p>
+                    <p id="laporanTotalPengeluaran" class="text-2xl font-bold text-secondary mt-1">Rp 0</p>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm">
+                    <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Surplus / Defisit</p>
+                    <p id="laporanSurplus" class="text-2xl font-bold text-emerald-700 mt-1">Rp 0</p>
+                </div>
+            </div>
+
+            <!-- Gaji vs Pengeluaran Section -->
+            <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-outline-variant pb-4">
+                    <div>
+                        <h3 class="font-bold text-lg text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">pie_chart</span> Rincian Gaji vs Pengeluaran Bulan Ini
+                        </h3>
+                        <p class="text-xs text-on-surface-variant">Analisis persentase alokasi gaji terpakai ke setiap kategori pengeluaran.</p>
+                    </div>
+                    <div>
+                        <span class="text-xs text-on-surface-variant font-medium">Sisa Gaji: </span>
+                        <span id="laporanSisaGaji" class="font-bold text-base text-primary">Rp 0</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-7 overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-surface-container text-xs font-semibold text-on-surface-variant uppercase border-b border-outline-variant">
+                                <tr>
+                                    <th class="px-4 py-2.5">Kategori Pengeluaran</th>
+                                    <th class="px-4 py-2.5 text-right">Jumlah</th>
+                                    <th class="px-4 py-2.5 text-right">% Dari Gaji</th>
+                                </tr>
+                            </thead>
+                            <tbody id="laporanGajiTableBody" class="divide-y divide-outline-variant/60"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="lg:col-span-5 flex flex-col items-center justify-center p-4">
+                        <div class="h-56 w-56 relative">
+                            <canvas id="reportSalaryDoughnutCanvas"></canvas>
+                        </div>
+                        <p class="text-xs text-on-surface-variant mt-2 font-medium">Distribusi Pengeluaran</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rekap Tables -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <h3 class="font-bold text-base text-on-surface border-b border-outline-variant pb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">category</span> Rekap Per Kategori
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-surface-container text-xs font-semibold text-on-surface-variant uppercase border-b border-outline-variant">
+                                <tr>
+                                    <th class="px-4 py-2.5">Kategori</th>
+                                    <th class="px-4 py-2.5">Tipe</th>
+                                    <th class="px-4 py-2.5 text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="laporanKategoriTableBody" class="divide-y divide-outline-variant/60"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <h3 class="font-bold text-base text-on-surface border-b border-outline-variant pb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">storefront</span> Rekap Per Usaha
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-surface-container text-xs font-semibold text-on-surface-variant uppercase border-b border-outline-variant">
+                                <tr>
+                                    <th class="px-4 py-2.5">Nama Usaha</th>
+                                    <th class="px-4 py-2.5 text-right">Pemasukan</th>
+                                    <th class="px-4 py-2.5 text-right">Pengeluaran</th>
+                                    <th class="px-4 py-2.5 text-right">Laba/Rugi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="laporanUsahaTableBody" class="divide-y divide-outline-variant/60"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 5: KELOLA KATEGORI -->
+        <!-- ================================================================= -->
+        <section id="view-kategori" class="view-section hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-on-surface">Kelola Kategori</h2>
+                    <p class="text-sm text-on-surface-variant">Atur kategori pemasukan dan pengeluaran keuangan Anda.</p>
+                </div>
+                <button onclick="App.openAddKategoriModal()" class="px-4 py-2.5 bg-primary text-on-primary rounded-xl font-semibold text-sm hover:bg-primary-container transition-all shadow flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">add</span> Tambah Kategori
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Pemasukan -->
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-outline-variant pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary bg-primary-container/20 p-2.5 rounded-xl">arrow_downward</span>
+                            <div>
+                                <h3 class="font-bold text-base text-on-surface">Kategori Pemasukan</h3>
+                                <p class="text-xs text-on-surface-variant">Aliran dana masuk</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pemasukan</span>
+                    </div>
+                    <div id="kategoriPemasukanContainer" class="divide-y divide-outline-variant/60"></div>
+                </div>
+
+                <!-- Pengeluaran -->
+                <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-outline-variant pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-secondary bg-secondary-container/20 p-2.5 rounded-xl">arrow_upward</span>
+                            <div>
+                                <h3 class="font-bold text-base text-on-surface">Kategori Pengeluaran</h3>
+                                <p class="text-xs text-on-surface-variant">Aliran dana keluar</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 bg-rose-100 text-rose-800 text-xs font-semibold rounded-full">Pengeluaran</span>
+                    </div>
+                    <div id="kategoriPengeluaranContainer" class="divide-y divide-outline-variant/60"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Banner -->
+    <footer class="mt-auto border-t border-outline-variant py-4 px-6 text-center text-xs text-on-surface-variant bg-surface-container-lowest">
+        <p>&copy; 2026 <strong>Keuangan App</strong> — Website Pencatatan Keuangan Bulanan & Usaha (Pure Web App + LocalStorage & Excel Export).</p>
+    </footer>
+</div>
+
+<!-- ========================================================================= -->
+<!-- MODALS -->
+<!-- ========================================================================= -->
+
+<!-- Modal Transaksi -->
+<div id="transaksiModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-surface-container-lowest w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
+        <div class="px-6 py-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low shrink-0">
+            <h3 id="modalTransaksiTitle" class="font-bold text-lg text-on-surface">Tambah Transaksi</h3>
+            <button onclick="App.closeModal('transaksiModal')" class="text-on-surface-variant p-1 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form onsubmit="App.saveTransaksiForm(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
+            <input type="hidden" id="formTransaksiId">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Tipe Transaksi</label>
+                    <select id="formTransaksiTipe" onchange="App.onFormTipeChange()" required class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+                        <option value="pemasukan">Pemasukan (+)</option>
+                        <option value="pengeluaran" selected>Pengeluaran (-)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Kategori</label>
+                    <select id="formTransaksiKategori" onchange="App.checkCategoryUsahaVisibility()" required class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+                        <option value="">-- Pilih Kategori --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="formUsahaContainer" class="hidden">
+                <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Terkait Usaha (Opsional)</label>
+                <select id="formTransaksiUsaha" class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+                    <option value="">-- Tidak Terkait Usaha --</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Tanggal Transaksi</label>
+                    <input type="date" id="formTransaksiTanggal" required class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Total Jumlah Nominal (Rp)</label>
+                    <input type="number" step="1" id="formTransaksiJumlah" min="0" required placeholder="0" class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm font-bold text-primary focus:ring-2 focus:ring-primary/20">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Keterangan Catatan</label>
+                <input type="text" id="formTransaksiKeterangan" placeholder="Catatan transaksi..." class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+            </div>
+
+            <!-- Dynamic Purchase Items -->
+            <div class="pt-4 border-t border-outline-variant space-y-3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-sm text-on-surface flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-primary text-base">shopping_bag</span> Rincian Item Pembelian (Opsional)
+                        </h4>
+                        <p class="text-[11px] text-on-surface-variant">Catat rincian barang/keperluan. Total otomatis dihitung dari item jika diisi.</p>
+                    </div>
+                    <button type="button" onclick="App.addItemRow()" class="px-3 py-1.5 bg-surface-container-high text-primary hover:bg-primary/10 rounded-xl font-semibold text-xs transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">add</span> Tambah Item
+                    </button>
+                </div>
+
+                <div id="itemRowsContainer" class="space-y-2"></div>
+            </div>
+
+            <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant shrink-0">
+                <button type="button" onclick="App.closeModal('transaksiModal')" class="px-4 py-2.5 rounded-xl border border-outline-variant text-sm font-semibold text-on-surface-variant hover:bg-surface-container">
+                    Batal
+                </button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-semibold text-sm hover:bg-primary-container shadow">
+                    Simpan Transaksi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Item Details -->
+<div id="itemDetailModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-surface-container-lowest w-full max-w-lg rounded-2xl shadow-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
+            <h3 class="font-bold text-lg text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">receipt_long</span> Rincian Item Pembelian
+            </h3>
+            <button onclick="App.closeModal('itemDetailModal')" class="text-on-surface-variant p-1 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="itemDetailContent" class="p-6"></div>
+    </div>
+</div>
+
+<!-- Modal Usaha -->
+<div id="usahaModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-surface-container-lowest w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
+            <h3 id="modalUsahaTitle" class="font-bold text-lg text-on-surface">Tambah Usaha Baru</h3>
+            <button onclick="App.closeModal('usahaModal')" class="text-on-surface-variant p-1 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form onsubmit="App.saveUsahaForm(event)" class="p-6 space-y-4">
+            <input type="hidden" id="formUsahaId">
+
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Nama Usaha</label>
+                <input type="text" id="formUsahaNama" required placeholder="misal: Warung Kopi Berkah" class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Keterangan / Deskripsi</label>
+                <textarea id="formUsahaKet" rows="3" placeholder="Deskripsi singkat..." class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Status Usaha</label>
+                <select id="formUsahaStatus" required class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+                    <option value="aktif">Aktif</option>
+                    <option value="nonaktif">Nonaktif</option>
+                </select>
+            </div>
+
+            <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant">
+                <button type="button" onclick="App.closeModal('usahaModal')" class="px-4 py-2.5 rounded-xl border border-outline-variant text-sm font-semibold text-on-surface-variant hover:bg-surface-container">Batal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-semibold text-sm hover:bg-primary-container shadow">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Kategori -->
+<div id="kategoriModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-surface-container-lowest w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
+            <h3 id="modalKategoriTitle" class="font-bold text-lg text-on-surface">Tambah Kategori Baru</h3>
+            <button onclick="App.closeModal('kategoriModal')" class="text-on-surface-variant p-1 rounded-lg hover:bg-surface-container">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form onsubmit="App.saveKategoriForm(event)" class="p-6 space-y-4">
+            <input type="hidden" id="formKategoriId">
+
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Nama Kategori</label>
+                <input type="text" id="formKategoriNama" required placeholder="misal: Investasi, Makanan" class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Tipe Kategori</label>
+                <select id="formKategoriTipe" required class="w-full px-4 py-2.5 rounded-xl border border-outline-variant text-sm focus:ring-2 focus:ring-primary/20">
+                    <option value="pemasukan">Pemasukan (+)</option>
+                    <option value="pengeluaran">Pengeluaran (-)</option>
+                </select>
+            </div>
+
+            <div class="pt-4 flex justify-end gap-3 border-t border-outline-variant">
+                <button type="button" onclick="App.closeModal('kategoriModal')" class="px-4 py-2.5 rounded-xl border border-outline-variant text-sm font-semibold text-on-surface-variant hover:bg-surface-container">Batal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-semibold text-sm hover:bg-primary-container shadow">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
