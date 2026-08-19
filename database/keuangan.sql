@@ -1,6 +1,5 @@
 -- Database Schema for Keuangan App
-CREATE DATABASE IF NOT EXISTS `keuangan` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `keuangan`;
+
 
 -- 1. Tabel Kategori
 CREATE TABLE IF NOT EXISTS `kategori` (

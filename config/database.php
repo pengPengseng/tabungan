@@ -1,5 +1,5 @@
 <?php
-// Config Connection PDO MySQL (Supports Local XAMPP & Remote Cloud MySQL via Environment Variables)
+// Config Connection PDO MySQL (Supports Local XAMPP & Remote Cloud MySQL like Aiven / Railway)
 define('DB_HOST', getenv('DB_HOST') ?: (getenv('MYSQL_HOST') ?: 'localhost'));
 define('DB_USER', getenv('DB_USER') ?: (getenv('MYSQL_USER') ?: 'root'));
 define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : (getenv('MYSQL_PASSWORD') !== false ? getenv('MYSQL_PASSWORD') : ''));
@@ -16,21 +16,24 @@ function get_db_connection() {
                 PDO::ATTR_EMULATE_PREPARES => false,
             ];
             
-            // Try connecting to database server
+            // Connect to actual database
+            $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+            
             try {
-                $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
                 $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
             } catch (PDOException $e) {
-                // If database doesn't exist yet, try creating it
-                $dsn_no_db = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";charset=utf8mb4";
-                $pdo_init = new PDO($dsn_no_db, DB_USER, DB_PASS, $options);
-                $pdo_init->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-                
-                $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
-                $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+                // If on localhost and database doesn't exist, create it (XAMPP environment)
+                if (DB_HOST === 'localhost' || DB_HOST === '127.0.0.1') {
+                    $dsn_no_db = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";charset=utf8mb4";
+                    $pdo_init = new PDO($dsn_no_db, DB_USER, DB_PASS, $options);
+                    $pdo_init->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                    $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+                } else {
+                    throw $e;
+                }
             }
             
-            // Auto initialize database tables if kategori table doesn't exist
+            // Auto initialize database tables if kategori table doesn't exist yet
             $checkTable = $pdo->query("SHOW TABLES LIKE 'kategori'")->rowCount();
             if ($checkTable === 0) {
                 $sqlFile = __DIR__ . '/../database/keuangan.sql';
@@ -40,7 +43,7 @@ function get_db_connection() {
                 }
             }
         } catch (PDOException $e) {
-            die("Koneksi Database Gagal: " . $e->getMessage() . " (Pastikan MySQL aktif atau atur variabel lingkungan DB_HOST di Vercel)");
+            die("Koneksi Database Gagal: " . $e->getMessage() . " (Pastikan MySQL aktif atau atur Environment Variables di Vercel)");
         }
     }
     return $pdo;
