@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate basic fields
         if ($kategori_id <= 0 || !in_array($tipe, ['pemasukan', 'pengeluaran']) || empty($tanggal)) {
             set_flash_message('error', 'Kategori, tipe, dan tanggal wajib diisi.');
-            header("Location: ../pages/transaksi.php");
+            header("Location: /pages/transaksi.php");
             exit;
         }
 
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             set_flash_message('error', 'Gagal menyimpan transaksi: ' . $e->getMessage());
         }
 
-        header("Location: ../pages/transaksi.php");
+        header("Location: /pages/transaksi.php");
         exit;
     }
 }
@@ -134,9 +134,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'delete') {
             set_flash_message('error', 'Gagal menghapus transaksi: ' . $e->getMessage());
         }
     }
-    header("Location: ../pages/transaksi.php");
+    header("Location: /pages/transaksi.php");
     exit;
 }
 
-header("Location: ../pages/transaksi.php");
+header("Location: /pages/transaksi.php");
 exit;
+

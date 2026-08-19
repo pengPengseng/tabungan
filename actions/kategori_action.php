@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 set_flash_message('error', 'Gagal menambahkan kategori: ' . $e->getMessage());
             }
         }
-        header("Location: ../pages/kategori.php");
+        header("Location: /pages/kategori.php");
         exit;
     }
 
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 set_flash_message('error', 'Gagal memperbarui kategori: ' . $e->getMessage());
             }
         }
-        header("Location: ../pages/kategori.php");
+        header("Location: /pages/kategori.php");
         exit;
     }
 }
@@ -62,9 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'delete') {
             set_flash_message('error', 'Gagal menghapus kategori: ' . $e->getMessage());
         }
     }
-    header("Location: ../pages/kategori.php");
+    header("Location: /pages/kategori.php");
     exit;
 }
 
-header("Location: ../pages/kategori.php");
+header("Location: /pages/kategori.php");
 exit;
+

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 set_flash_message('error', 'Gagal menambahkan usaha: ' . $e->getMessage());
             }
         }
-        header("Location: ../pages/usaha.php");
+        header("Location: /pages/usaha.php");
         exit;
     }
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 set_flash_message('error', 'Gagal memperbarui usaha: ' . $e->getMessage());
             }
         }
-        header("Location: ../pages/usaha.php");
+        header("Location: /pages/usaha.php");
         exit;
     }
 }
@@ -58,9 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'delete') {
             set_flash_message('error', 'Gagal menghapus usaha: ' . $e->getMessage());
         }
     }
-    header("Location: ../pages/usaha.php");
+    header("Location: /pages/usaha.php");
     exit;
 }
 
-header("Location: ../pages/usaha.php");
+header("Location: /pages/usaha.php");
 exit;
+

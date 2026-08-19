@@ -188,7 +188,7 @@ $auto_open_add = isset($_GET['action']) && $_GET['action'] === 'new';
                                     <button onclick='editTransaksi(<?= json_encode($t); ?>)' class="p-1 text-on-surface-variant hover:text-tertiary rounded-lg hover:bg-surface-container" title="Edit">
                                         <span class="material-symbols-outlined text-lg">edit</span>
                                     </button>
-                                    <a href="../actions/transaksi_action.php?action=delete&id=<?= $t['id']; ?>" onclick="return confirm('Yakin menghapus transaksi ini?')" class="p-1 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container" title="Hapus">
+                                    <a href="/actions/transaksi_action.php?action=delete&id=<?= $t['id']; ?>" onclick="return confirm('Yakin menghapus transaksi ini?')" class="p-1 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container" title="Hapus">
                                         <span class="material-symbols-outlined text-lg">delete</span>
                                     </a>
                                 </div>
@@ -211,7 +211,7 @@ $auto_open_add = isset($_GET['action']) && $_GET['action'] === 'new';
             </button>
         </div>
         
-        <form action="../actions/transaksi_action.php" method="POST" class="p-6 space-y-4 overflow-y-auto flex-1">
+        <form action="/actions/transaksi_action.php" method="POST" class="p-6 space-y-4 overflow-y-auto flex-1">
             <input type="hidden" name="action" id="transaksiAction" value="create">
             <input type="hidden" name="id" id="transaksiId" value="">
 
@@ -368,7 +368,7 @@ function editTransaksi(data) {
     checkCategoryType();
     
     // Fetch items via AJAX if exists
-    fetch(`../actions/get_items.php?transaksi_id=${data.id}`)
+    fetch(`/actions/get_items.php?transaksi_id=${data.id}`)
         .then(res => res.json())
         .then(items => {
             if (Array.isArray(items) && items.length > 0) {
@@ -410,7 +410,7 @@ function fetchAndShowItemDetails(transaksiId) {
     content.innerHTML = '<p class="text-center text-sm text-on-surface-variant">Memuat data item...</p>';
     openModal('itemDetailModal');
 
-    fetch(`../actions/get_items.php?transaksi_id=${transaksiId}`)
+    fetch(`/actions/get_items.php?transaksi_id=${transaksiId}`)
         .then(res => res.json())
         .then(items => {
             if (!Array.isArray(items) || items.length === 0) {
@@ -470,3 +470,5 @@ function fetchAndShowItemDetails(transaksiId) {
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+
+

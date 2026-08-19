@@ -50,7 +50,7 @@ $pengeluaran_list = array_filter($kategori_list, fn($k) => $k['tipe'] === 'penge
                             <button onclick='openEditKategoriModal(<?= json_encode($kat); ?>)' class="p-1.5 text-on-surface-variant hover:text-tertiary rounded-lg hover:bg-surface-container-high transition-colors" title="Edit">
                                 <span class="material-symbols-outlined text-lg">edit</span>
                             </button>
-                            <a href="../actions/kategori_action.php?action=delete&id=<?= $kat['id']; ?>" onclick="return confirm('Yakin ingin menghapus kategori ini?')" class="p-1.5 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container-high transition-colors" title="Hapus">
+                            <a href="/actions/kategori_action.php?action=delete&id=<?= $kat['id']; ?>" onclick="return confirm('Yakin ingin menghapus kategori ini?')" class="p-1.5 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container-high transition-colors" title="Hapus">
                                 <span class="material-symbols-outlined text-lg">delete</span>
                             </a>
                         </div>
@@ -87,7 +87,7 @@ $pengeluaran_list = array_filter($kategori_list, fn($k) => $k['tipe'] === 'penge
                             <button onclick='openEditKategoriModal(<?= json_encode($kat); ?>)' class="p-1.5 text-on-surface-variant hover:text-tertiary rounded-lg hover:bg-surface-container-high transition-colors" title="Edit">
                                 <span class="material-symbols-outlined text-lg">edit</span>
                             </button>
-                            <a href="../actions/kategori_action.php?action=delete&id=<?= $kat['id']; ?>" onclick="return confirm('Yakin ingin menghapus kategori ini?')" class="p-1.5 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container-high transition-colors" title="Hapus">
+                            <a href="/actions/kategori_action.php?action=delete&id=<?= $kat['id']; ?>" onclick="return confirm('Yakin ingin menghapus kategori ini?')" class="p-1.5 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container-high transition-colors" title="Hapus">
                                 <span class="material-symbols-outlined text-lg">delete</span>
                             </a>
                         </div>
@@ -107,7 +107,7 @@ $pengeluaran_list = array_filter($kategori_list, fn($k) => $k['tipe'] === 'penge
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
-        <form action="../actions/kategori_action.php" method="POST" class="p-6 space-y-4">
+        <form action="/actions/kategori_action.php" method="POST" class="p-6 space-y-4">
             <input type="hidden" name="action" id="kategoriAction" value="create">
             <input type="hidden" name="id" id="kategoriId" value="">
 
@@ -159,3 +159,4 @@ function openEditKategoriModal(data) {
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

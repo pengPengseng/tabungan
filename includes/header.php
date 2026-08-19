@@ -112,30 +112,30 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
     
     <nav class="flex-1 space-y-1.5">
-        <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'dashboard.php' || $current_page == 'index.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
+        <a href="/pages/dashboard.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'dashboard.php' || $current_page == 'index.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
             <span class="material-symbols-outlined <?= ($current_page == 'dashboard.php' || $current_page == 'index.php') ? 'icon-fill' : ''; ?>">dashboard</span>
             Dashboard
         </a>
-        <a href="transaksi.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'transaksi.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
+        <a href="/pages/transaksi.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'transaksi.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
             <span class="material-symbols-outlined <?= ($current_page == 'transaksi.php') ? 'icon-fill' : ''; ?>">receipt_long</span>
             Transaksi
         </a>
-        <a href="usaha.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'usaha.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
+        <a href="/pages/usaha.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'usaha.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
             <span class="material-symbols-outlined <?= ($current_page == 'usaha.php') ? 'icon-fill' : ''; ?>">storefront</span>
             Usaha Saya
         </a>
-        <a href="laporan.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'laporan.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
+        <a href="/pages/laporan.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'laporan.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
             <span class="material-symbols-outlined <?= ($current_page == 'laporan.php') ? 'icon-fill' : ''; ?>">assessment</span>
             Laporan
         </a>
-        <a href="kategori.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'kategori.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
+        <a href="/pages/kategori.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 <?= ($current_page == 'kategori.php') ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm translate-x-1' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'; ?>">
             <span class="material-symbols-outlined <?= ($current_page == 'kategori.php') ? 'icon-fill' : ''; ?>">category</span>
             Kelola Kategori
         </a>
     </nav>
     
     <div class="mt-auto pt-4 space-y-2 border-t border-outline-variant">
-        <a href="transaksi.php?action=new" class="w-full py-3 px-4 bg-primary text-on-primary rounded-xl font-semibold text-sm hover:bg-primary-container transition-all shadow flex items-center justify-center gap-2">
+        <a href="/pages/transaksi.php?action=new" class="w-full py-3 px-4 bg-primary text-on-primary rounded-xl font-semibold text-sm hover:bg-primary-container transition-all shadow flex items-center justify-center gap-2">
             <span class="material-symbols-outlined">add_circle</span>
             Tambah Transaksi
         </a>
@@ -155,19 +155,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </button>
         </div>
         <nav class="space-y-2 flex-1">
-            <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'dashboard.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
+            <a href="/pages/dashboard.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'dashboard.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
                 <span class="material-symbols-outlined">dashboard</span> Dashboard
             </a>
-            <a href="transaksi.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'transaksi.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
+            <a href="/pages/transaksi.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'transaksi.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
                 <span class="material-symbols-outlined">receipt_long</span> Transaksi
             </a>
-            <a href="usaha.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'usaha.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
+            <a href="/pages/usaha.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'usaha.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
                 <span class="material-symbols-outlined">storefront</span> Usaha Saya
             </a>
-            <a href="laporan.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'laporan.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
+            <a href="/pages/laporan.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'laporan.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
                 <span class="material-symbols-outlined">assessment</span> Laporan
             </a>
-            <a href="kategori.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'kategori.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
+            <a href="/pages/kategori.php" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm <?= ($current_page == 'kategori.php') ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant'; ?>">
                 <span class="material-symbols-outlined">category</span> Kelola Kategori
             </a>
         </nav>
@@ -224,3 +224,4 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </button>
         </div>
     <?php endif; ?>
+

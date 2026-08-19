@@ -24,7 +24,7 @@ if ($selected_usaha_id > 0) {
     </div>
     <div class="flex gap-2">
         <?php if ($selected_usaha_id > 0): ?>
-            <a href="usaha.php" class="px-4 py-2.5 bg-surface-container-high text-on-surface rounded-xl font-semibold text-sm hover:bg-surface-container-highest transition-all flex items-center gap-2">
+            <a href="/pages/usaha.php" class="px-4 py-2.5 bg-surface-container-high text-on-surface rounded-xl font-semibold text-sm hover:bg-surface-container-highest transition-all flex items-center gap-2">
                 <span class="material-symbols-outlined text-lg">arrow_back</span> Kembali ke Daftar Usaha
             </a>
         <?php endif; ?>
@@ -148,7 +148,7 @@ if ($selected_usaha_id > 0) {
                                 <button onclick='openEditUsahaModal(<?= json_encode($u); ?>)' class="p-1 text-on-surface-variant hover:text-tertiary rounded-lg hover:bg-surface-container" title="Edit Usaha">
                                     <span class="material-symbols-outlined text-lg">edit</span>
                                 </button>
-                                <a href="../actions/usaha_action.php?action=delete&id=<?= $u['id']; ?>" onclick="return confirm('Yakin menghapus usaha ini? Transaksi tidak akan terhapus.')" class="p-1 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container" title="Hapus Usaha">
+                                <a href="/actions/usaha_action.php?action=delete&id=<?= $u['id']; ?>" onclick="return confirm('Yakin menghapus usaha ini? Transaksi tidak akan terhapus.')" class="p-1 text-on-surface-variant hover:text-secondary rounded-lg hover:bg-surface-container" title="Hapus Usaha">
                                     <span class="material-symbols-outlined text-lg">delete</span>
                                 </a>
                             </div>
@@ -174,7 +174,7 @@ if ($selected_usaha_id > 0) {
                         </div>
                     </div>
 
-                    <a href="usaha.php?detail=<?= $u['id']; ?>" class="w-full py-2.5 px-4 bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary rounded-xl font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+                    <a href="/pages/usaha.php?detail=<?= $u['id']; ?>" class="w-full py-2.5 px-4 bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary rounded-xl font-semibold text-xs transition-colors flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-base">analytics</span> Lihat Detail & Rincian Item
                     </a>
                 </div>
@@ -192,7 +192,7 @@ if ($selected_usaha_id > 0) {
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
-        <form action="../actions/usaha_action.php" method="POST" class="p-6 space-y-4">
+        <form action="/actions/usaha_action.php" method="POST" class="p-6 space-y-4">
             <input type="hidden" name="action" id="usahaAction" value="create">
             <input type="hidden" name="id" id="usahaId" value="">
 
@@ -252,3 +252,5 @@ function openEditUsahaModal(data) {
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+
+
