@@ -27,7 +27,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Custom App JS -->
-    <script src="../assets/js/script.js"></script>
+    <script src="/assets/js/script.js"></script>
 
     <!-- Tailwind Config matching Stitch Fiscal Precision Design -->
     <script>
